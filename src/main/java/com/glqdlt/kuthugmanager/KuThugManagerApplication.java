@@ -19,7 +19,6 @@ public class KuThugManagerApplication implements CommandLineRunner {
     @Autowired
     ResourceManager resourceManager;
 
-
     public static void main(String[] args) {
         SpringApplication.run(KuThugManagerApplication.class, args);
     }
@@ -36,8 +35,5 @@ public class KuThugManagerApplication implements CommandLineRunner {
                 runnerPool.runner(i, task);
             }
         }
-
     }
-
-
 }

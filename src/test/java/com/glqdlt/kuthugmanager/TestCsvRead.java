@@ -7,12 +7,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import sun.applet.Main;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -34,7 +31,7 @@ public class TestCsvRead {
         String path = "C:\\Users\\iw.jhun\\Documents\\workspace-idea\\ku-thug-manager\\src\\main\\resources";
         for(int i=0; i<9999;i++){
             String text = "http://"+i+System.lineSeparator();
-            Files.write(Paths.get(path,"test.csv"),text.getBytes(), StandardOpenOption.CREATE,StandardOpenOption.APPEND);
+            Files.write(Paths.get(path, "url.csv"),text.getBytes(), StandardOpenOption.CREATE,StandardOpenOption.APPEND);
         }
     }
 

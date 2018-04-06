@@ -2,17 +2,14 @@ package com.glqdlt.kuthugmanager;
 
 import com.opencsv.CSVReader;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created By iw.jhun
@@ -21,13 +18,15 @@ import java.util.Map;
 @Slf4j
 @Component
 public class ResourceManager {
-    @Value("${thug.agent.url}")
-    private String[] THUG_AGENTS;
+    @Value("${agent.config.path}")
+    private String THUG_PATH;
 
-    @Value("${url.csv.path}")
+
+    @Value("${url.config.path}")
     private String URL_PATH;
 
     List<String[]> urlList;
+    private List<String[]> agentList;
 
     private int urlIndex;
     private int agentIndex;
@@ -36,14 +35,18 @@ public class ResourceManager {
 
 
     public int getAgentSize() {
-        return this.THUG_AGENTS.length;
+        return this.agentList.size();
     }
 
     @PostConstruct
     private void init() {
-        try (Reader reader = Files.newBufferedReader(Paths.get(URL_PATH));
-             CSVReader csvReader = new CSVReader(reader)) {
-            urlList = csvReader.readAll();
+        try (
+                CSVReader urlReader = new CSVReader(Files.newBufferedReader(Paths.get(URL_PATH)));
+                CSVReader agentReader = new CSVReader(Files.newBufferedReader(Paths.get(THUG_PATH)))
+        ) {
+            urlList = urlReader.readAll();
+            agentList = agentReader.readAll();
+
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
@@ -54,7 +57,7 @@ public class ResourceManager {
 
     public synchronized JobTask taskBuild() {
         JobTask task = new JobTask();
-        task.setAgent(this.THUG_AGENTS[this.agentIndex]);
+        task.setAgent(this.agentList.get(this.agentIndex)[0]);
         task.setUrl(this.urlList.get(this.urlIndex)[0]);
         upAgentIndex();
         upUrlIndex();
@@ -62,19 +65,19 @@ public class ResourceManager {
         return task;
     }
 
-    public int getTaskIndex(){
+    public int getTaskIndex() {
         return this.taskIndex;
     }
 
     private void upAgentIndex() {
         this.agentIndex++;
-        if (this.agentIndex >= this.THUG_AGENTS.length) {
+        if (this.agentIndex >= this.agentList.size()) {
             this.agentIndex = 0;
         }
     }
 
     private void upTaskIndex() {
-        if (this.taskIndex < this.THUG_AGENTS.length) {
+        if (this.taskIndex < this.agentList.size()) {
             this.taskIndex++;
         }
     }
