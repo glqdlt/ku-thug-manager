@@ -12,8 +12,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.rmi.server.ObjID;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Created By iw.jhun
@@ -35,8 +37,8 @@ public class SimpleThreadPools {
     @PostConstruct
     private void init() {
 
-        try (Reader reader = Files.newBufferedReader(Paths.get(URL_PATH))) {
-            CSVReader csvReader = new CSVReader(reader);
+        try (Reader reader = Files.newBufferedReader(Paths.get(URL_PATH));
+             CSVReader csvReader = new CSVReader(reader)) {
             urlList = csvReader.readAll();
         } catch (IOException e) {
             log.error(e.getMessage(), e);
@@ -46,17 +48,16 @@ public class SimpleThreadPools {
 
     public void runner() {
         ExecutorService executor = Executors.newFixedThreadPool(THUG_AGENTS.length);
-        int agentIndex = 0;
-        while (true) {
+        for(int i=0; i<999;i++) {
+            int agentIndex = 0;
             for (String url[] : urlList) {
                 if (agentIndex >= THUG_AGENTS.length) {
                     agentIndex = 0;
                 }
-                executor.execute(new JobWorker(url[0], THUG_AGENTS[agentIndex]));
+                executor.submit(new JobWorker(url[0], THUG_AGENTS[agentIndex]));
                 agentIndex++;
             }
         }
+
     }
-
 }
-
