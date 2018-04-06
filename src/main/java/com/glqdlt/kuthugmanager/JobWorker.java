@@ -30,10 +30,10 @@ public class JobWorker implements Runnable {
         map.put("url", url);
 //                    restTemplate.postForObject("http://127.0.0.1:15000/thug/remote/",map,String.class);
         try {
-            Thread.sleep(100);
+            Thread.sleep(10);
         } catch (InterruptedException e) {
             log.error(e.getMessage(), e);
         }
-        log.info("[end] thug_agent : '{}' url : '{}'",thugAgent,url);
+//        log.info("[end] thug_agent : '{}' url : '{}'",thugAgent,url);
     }
 }

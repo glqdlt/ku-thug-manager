@@ -46,21 +46,16 @@ public class SimpleThreadPools {
         ExecutorService executor = Executors.newFixedThreadPool(THUG_AGENTS.length);
 
         int agentIndex = 0;
-        int urlIndex = 0;
 
         while (true) {
 
-            if (agentIndex >= THUG_AGENTS.length) {
-                agentIndex = 0;
+            for (String url[] : urlList) {
+                if (agentIndex >= THUG_AGENTS.length) {
+                    agentIndex = 0;
+                }
+                executor.execute(new JobWorker(url[0], THUG_AGENTS[agentIndex]));
+                agentIndex++;
             }
-            if (urlIndex >= urlList.size()) {
-                urlIndex = 0;
-            }
-
-            executor.execute(new JobWorker(urlList.get(urlIndex)[0], THUG_AGENTS[agentIndex]));
-
-            agentIndex++;
-            urlIndex++;
         }
     }
 
