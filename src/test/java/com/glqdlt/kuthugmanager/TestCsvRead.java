@@ -45,6 +45,7 @@ public class TestCsvRead {
                     = Files.newBufferedReader(Paths.get(URL_PATH));
             CSVReader csvReader = new CSVReader(reader);
             csvReader.readAll().forEach(x -> log.info(x[0]));
+            reader.close();
 
         } catch (IOException e) {
             e.printStackTrace();

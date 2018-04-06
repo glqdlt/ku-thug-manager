@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.rmi.server.ObjID;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,23 +33,21 @@ public class SimpleThreadPools {
     List<String[]> urlList;
 
     @PostConstruct
-    private void init() throws IOException {
+    private void init() {
 
-        Reader reader
-                = Files.newBufferedReader(Paths.get(URL_PATH));
-        CSVReader csvReader = new CSVReader(reader);
-        urlList = csvReader.readAll();
+        try (Reader reader = Files.newBufferedReader(Paths.get(URL_PATH))) {
+            CSVReader csvReader = new CSVReader(reader);
+            urlList = csvReader.readAll();
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+
+        }
     }
 
     public void runner() {
-
-
         ExecutorService executor = Executors.newFixedThreadPool(THUG_AGENTS.length);
-
         int agentIndex = 0;
-
         while (true) {
-
             for (String url[] : urlList) {
                 if (agentIndex >= THUG_AGENTS.length) {
                     agentIndex = 0;
