@@ -1,4 +1,3 @@
-# Pull base image.
 FROM java:8
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
@@ -10,5 +9,4 @@ ADD agent.config agent.config
 
 EXPOSE 8080
 
-# Define default command.
 CMD java -Xmx2048m -jar  -Durl.config.path=url.config -Dagent.config.path=agent.config thug-manager.jar

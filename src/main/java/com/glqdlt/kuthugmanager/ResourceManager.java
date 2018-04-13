@@ -21,7 +21,6 @@ public class ResourceManager {
     @Value("${agent.config.path}")
     private String THUG_PATH;
 
-
     @Value("${url.config.path}")
     private String URL_PATH;
 

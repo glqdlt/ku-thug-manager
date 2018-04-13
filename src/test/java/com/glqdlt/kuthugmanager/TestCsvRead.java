@@ -2,6 +2,7 @@ package com.glqdlt.kuthugmanager;
 
 import com.opencsv.CSVReader;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +27,8 @@ public class TestCsvRead {
     private String URL_PATH;
 
 
-//    @Test
+    @Ignore
+    @Test
     public void makeFile() throws IOException {
         String path = "C:\\Users\\iw.jhun\\Documents\\workspace-idea\\ku-thug-manager\\src\\main\\resources";
         for(int i=0; i<9999;i++){
@@ -45,7 +47,7 @@ public class TestCsvRead {
             reader.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(),e);
         }
     }
 }
